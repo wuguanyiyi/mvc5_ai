@@ -1,0 +1,14 @@
+﻿<ul class="navbar-nav flex-grow-1">
+    @if (User.Identity.IsAuthenticated)
+    {
+        @*已登入*@
+        <li><a href="#" class="btn btn-primary me-2">@User.Identity.Name</a></li>
+        <li>@Html.ActionLink("登出", "Index","Users", null, new { @class="btn btn-danger"})</li>
+    }
+    else
+    {
+        @*未登入*@
+        <li><a href="@Url.Action("Login", "Users")" class="btn btn-primary me-2">登入</a></li>
+        <li><a href="@Url.Action("Create", "Users")" class="btn btn-warning">註冊</a></li>
+    }
+</ul>

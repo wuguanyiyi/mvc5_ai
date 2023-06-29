@@ -1,0 +1,159 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <header>
+            <ul class="headinfo">
+                <li>
+                    <img src="https://media1.giphy.com/media/7kn27lnYSAE9O/200.webp?cid=ecf05e47mwx2cuu86ct9i80fhmbahffgmbvl4uq2i6o0b0rq&rid=200.webp&ct=g"
+                         alt="">
+                </li>
+                <li><a href="./interface.html">Home</a></li>
+                <li><a href="./aboutus.html">about us</a></li>
+                <li><a href="./QAgpt.html">QAgpt</a></li>
+
+                <ul class="account" id="account">
+                    <partial name="_LoginStatusPartial" />
+                    <li>
+                        <select name="language" id="language">
+                            <option value="zh" selected>Chinese</option>
+                            <option value="en">English</option>
+                            <option value="jp">Japanese</option>
+                        </select>
+                    </li>
+
+                </ul>
+            </ul>
+        </header>
+        
+        
+    }
+    else
+    {
+        <header>
+            <ul class="headinfo">
+                <li>
+                    <img src="https://media1.giphy.com/media/7kn27lnYSAE9O/200.webp?cid=ecf05e47mwx2cuu86ct9i80fhmbahffgmbvl4uq2i6o0b0rq&rid=200.webp&ct=g"
+                         alt="">
+                </li>
+                <li><a href="./interface.html">Home</a></li>
+                <li><a href="./aboutus.html">about us</a></li>
+                <li><a href="./QAgpt.html">QAgpt</a></li>
+
+                <ul class="account" id="account">
+                    <partial name="_LoginStatusPartial" />
+                    <li>
+                        <select name="language" id="language">
+                            <option value="zh" selected>Chinese</option>
+                            <option value="en">English</option>
+                            <option value="jp">Japanese</option>
+                        </select>
+                    </li>
+
+                </ul>
+            </ul>
+        </header>
+        
+        
+    }
+</ul>
+
+@section topCSS{
+    <style>
+        .header {
+            box-sizing: border-box;
+            padding: 0 10%;
+            display: flex;
+            width: 100%;
+            height: 70px;
+            background-color: #919191;
+            justify-content: space-between;
+        }
+
+            .header img {
+                height: 100%;
+                width: 100px;
+            }
+
+            .header ul {
+                display: flex;
+                height: 100%;
+                align-items: end;
+                align-items: center;
+            }
+
+                .header ul li {
+                    text-decoration: none;
+                    list-style: none;
+                    padding: 5px 10px;
+                    font-size: 1.5rem;
+                }
+
+                .header ul:first-child {
+                    align-items: end;
+                }
+
+                    .header ul:first-child li:first-child {
+                        padding: 0px;
+                        border: 0px;
+                        display: flex;
+                    }
+
+                    .header ul:first-child li:hover {
+                        background-color: #BBBBBB;
+                    }
+
+            .header .headinfo li {
+                border-right: 1px solid #BBBBBB;
+                box-sizing: border-box;
+                padding-bottom: 5px;
+            }
+
+            .header .account button {
+                width: 100px;
+                height: 30px;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+
+                .header .account button:hover {
+                    box-sizing: border-box;
+                    box-shadow: 5px 5px gray;
+                }
+
+            .header .account .sign {
+                background-color: #66CCFF;
+                border: 0px;
+                border-radius: 5px;
+            }
+
+                .header .account .sign:hover {
+                    background-color: #2277A7;
+                }
+
+            .header .account .login {
+                background-color: #AEDFF7;
+                border: 0px;
+                border-radius: 5px;
+            }
+
+                .header .account .login:hover {
+                    background-color: #82C9E7;
+                }
+
+            .header .account select {
+                width: 80px;
+                height: 50px;
+                background-color: #919191;
+                border: 1px solid #000000;
+            }
+
+                .header .account select img {
+                    width: 100%;
+                    height: auto !important;
+                }
+    </style>
+}

@@ -1,0 +1,493 @@
+﻿@{
+    ViewData["Title"] = "UserReport";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!--這是header-->
+    <navbar id="header" class="head bg-secondary row m-0 justify-content-center fixed-top col px-lg-5 px-md-2">
+        <div class="d-flex row h-100 px-0">
+            <div class="col-md-2 d-none  d-md-block w-auto h-100 px-0" id="logo">
+                <img class="h-100"
+                    src="https://media1.giphy.com/media/7kn27lnYSAE9O/200.webp?cid=ecf05e47mwx2cuu86ct9i80fhmbahffgmbvl4uq2i6o0b0rq&rid=200.webp&ct=g"
+                    alt="logo" class="logo">
+            </div>
+            <div class="col" id="PageLink">
+                <div class="row  h-100 justify-content-md-between">
+                    <div class="col-12 col-lg-5 col-md-6 d-flex h-md-100 align-items-end mt-2 mt-md-0">
+                        <div class="row col flex-nowrap align-items-end h-50">
+                            <button type="button" src="./hackproject.html"class="col btn btn-secondary border-0 rounded-0 col border-end border-secondary-subtle px-0 px-lg-2">
+                                <a asp-controller="Reports" asp-action="Home">
+                                    <h5 class="text-center mb-0 " id="languageChoose">首頁</h5>
+                                </a>
+                            </button>
+                            <button type="button" src="./aboutus.html"class="col btn btn-secondary border-0 rounded-0 col border-end border-secondary-subtle px-0 px-lg-2">
+                                <a asp-controller="Users" asp-action="Index">
+                                    <h5 class="text-center mb-0" id="languageChoose">關於</h5>
+                                </a>
+                            </button>
+                            <button type="button" src="./QAGpt.html"class="col btn btn-secondary border-0 rounded-0 col border-md-end border-secondary-subtle">
+                                <a asp-controller="Reports" asp-action="UserReport">
+                                    <h5 class="text-center mb-0">QAGPT</h5>
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-6 gap-3 d-flex align-items-center my-2 my-md-0">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Users" asp-action="Signout" class="btn btn-primary me-2  ">@User.Identity.Name</a>
+                            @Html.ActionLink("登出", "Signout","Users", null, new { @class="btn btn-danger"})
+                        }
+                        else
+                        {
+                            <a class="Create" asp-controller="Users" asp-action="Create"><button class="btn btn-primary me-2 " id="languageChoose">註冊</button></a>
+                            <a class="login" asp-controller="Users" asp-action="Login"><button class="btn btn-info me-2" id="languageChoose">登入</button></a>
+                        }
+
+                            <select name="language" id="language" class=" h-75 w-75">
+
+                            <option selected value="English">English</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Korean">Korean</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                            <option value="Italian">Italian</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </navbar>
+
+
+   
+
+
+
+
+    <div class="QABody col bg-body-secondary mx-0 row">
+    <!--左邊的Start Use 及收縮區塊-->
+        <div class="leftStartBox col-3 h-100 bg-secondary-subtle p-4 position-relative"id="StartUse">
+            <button type="button" class="btn-close position-absolute" aria-label="Close" style="right:24px;top: 24px;"
+                id="StartUseBtn"></button>
+            <h4>Start Use</h4>
+            <h5>開始使用我們的客服機器人AI</h5>
+            <h6>1.第一步:</h5>
+            <h6>2.第二步:</h5>
+        </div>
+        <button type="button"
+            class="btn position-absolute btn-outline-secondary p-0 rounded-2 d-flex align-items-center justify-content-center"
+            aria-label="Close" id="Expand">
+
+            <img class="h-50 " src="/image/expand-arrows.png" alt="">
+        </button>
+        <div class="leftStartBox col-md-3 col-sm-5 col-8 bg-secondary-subtle p-4 " id="History">  
+            
+            <div class="h-100  overflow-y-auto">
+        <!--收縮部分-->
+                <h4>History </h4>
+                <div class="h-50 border-bottom border-secondary-subtle">
+                    <button class="btn btn-secondary w-100 mt-3 p-2" id="NewChat">
+                        <h5 class="m-0">New Chat</h5>
+                    </button>
+                    <div class="btn btn-secondary w-100 mt-2 p-2 d-flex justify-content-between ">
+                        <h5 class="m-0">Name</h5>
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close" id="ChatClose"></button>
+                    </div>
+                </div>
+                <label for="">Mode</label>
+                <div class="dropdown mt-1">
+                    <button class="w-100 btn btn-outline-secondary dropdown-toggle d-flex align-items-center" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <p class="overflow-hidden p-0 m-0">
+                            Complete
+                        </p>
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="w-100 dropdown-item" href="#">Complete</a></li>
+                        <li><a class="w-100 dropdown-item" href="#">Chat</a></li>
+                        <li><a class="w-100 dropdown-item" href="#">Other</a></li>
+                    </ul>
+                </div>
+                <label class="mt-2" for="">Modal</label>
+                <div class="dropdown mt-1">
+                    <button class="w-100 btn btn-outline-secondary dropdown-toggle d-flex align-items-center" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <p class="overflow-hidden p-0 m-0">
+                            text-danvic-003
+                        </p>
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="w-100 dropdown-item" href="#">text-danvic-003</a></li>
+                        <li><a class="w-100 dropdown-item" href="#">Chat</a></li>
+                        <li><a class="w-100 dropdown-item" href="#">Other</a></li>
+                    </ul>
+                </div>
+                <div class="mb-3 mt-2 custom-range-container">
+                    <div class="d-flex justify-content-between">
+                        <label for="rangeInput" class="form-label overflow-hidden">Template</label>
+                        <span class="px-2" id="rangeValue">1</span>
+                    </div>
+                    <input type="range" class="form-range custom-range" id="rangeInput" min="0" max="2" step="0.01" value="1">
+                
+                </div>
+                <button class="btn btn-secondary w-100 mt-3 p-2" id="FileUpLoad">
+                    <h5 class="m-0">會員檔案上傳</h5>
+                </button>
+            </div>
+
+        </div>
+        <div class="col d-flex flex-column bg-light">
+            <div class="row px-3 py-4 border-bottom border-dark-subtle align-items-center justify-content-between"id="QAhead">
+                <h4 class="w-auto m-0 fw-bold">QAGPT</h4>
+                <div class="w-auto d-flex flex-row row gap-3 justify-content-md-end justify-content-start ">
+                    <button type="button" class="btn btn-secondary w-auto px-xl-4 px-3 d-md-block d-none">Save</button>
+                    <button type="button" class="btn btn-secondary w-auto px-xl-4 px-3 d-md-block d-none">View</button>
+                    <button type="button" class="btn btn-secondary w-auto px-xl-4 px-3 d-md-block d-none">Share</button>
+                    <select class="form-select form-select-lg w-auto m-0 d-md-none d-block" aria-label=".form-select-lg example">
+                        <option selected>...</option>
+                        <option value="1">Save</option>
+                        <option value="2">View</option>
+                        <option value="3">Share</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col h-100 row bg-light p-0">
+                <div class="col d-flex flex-column justify-content-between position-relative p-0" id="QABox">
+                    <div class=" flex-column h-100 overflow-y-scroll pb-5 bg-dark-subtle" id="question">
+        <!--對話部分-->
+        <!--AI回的-->
+                        <div class="border-bottom border-dark-subtle w-100 h-auto bg-dark-subtle p-4 ps-5 row align-items-sm-center justify-content-center m-0 flex-column flex-sm-row" id="response">
+                            <img class="p-0 col-2 m-3" src="/image/175538168.jpg" alt="">
+                            <p class="col">
+                                外的都覺得，大家都還是大概就啊下一個，一件都是的風格，有這，隱特典今沒有，瘋狂是第一。
+                                
+                                跟你支還希望我會去，戀愛到了的東西便利商⋯蠻好但我漸漸這就可以。
+                                
+                                少讓我覺得活著其實沒想起來，什麼的時夾真的好：一樣是是怎樣，小時覺，其他狀態定將他起來就發混亂看有，肚子見尤其是。不會跟天還歡迎的東好，就您好裡有什我的心喜歡，要這喜歡喜歡真的把自己不是說。
+                                
+                                很可等等這的完全不符，是想希望型這樣對也很比起自己要，的經驗這兩之後最新那些，起來的動畫不錯洗這麼會。
+                            </p>
+                        </div>
+        <!--我們問的 記得align-items-end 跟 flex-sm-row-reverse-->
+                        <div class="border-bottom border-dark-subtle w-100 h-auto bg-dark-subtle p-4 ps-5 row align-items-sm-center align-items-end justify-content-center m-0 flex-column flex-sm-row-reverse "
+                            id="response">
+                            <img class="p-0 col-2 m-3" src="/image/175538168.jpg" alt="">
+                            <p class="col">
+                                外的都覺得，大家都還是大概就啊下一個，一件都是的風格，有這，隱特典今沒有，瘋狂是第一。
+                        
+                                跟你支還希望我會去，戀愛到了的東西便利商⋯蠻好但我漸漸這就可以。
+                        
+                                少讓我覺得活著其實沒想起來，什麼的時夾真的好：一樣是是怎樣，小時覺，其他狀態定將他起來就發混亂看有，肚子見尤其是。不會跟天還歡迎的東好，就您好裡有什我的心喜歡，要這喜歡喜歡真的把自己不是說。
+                        
+                                很可等等這的完全不符，是想希望型這樣對也很比起自己要，的經驗這兩之後最新那些，起來的動畫不錯洗這麼會。
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="w-100 px-sm-5 d-flex  align-items-center justify-content-center position-absolute bottom-0 start-25 mb-3">
+                        <textarea class="p-2 w-75" name="" rows="1" id="askQ"></textarea>
+                        <div class="d-flex justify-content-end align-items-center gap-md-2">
+                            <button type="button" class="btn btn-primary">Submit</button>
+                            <button type="butto" class="btn btn-secondary p-2" id="micro">
+                                <img class="w-100 " src="/image/microphone-black-shape.png" alt="">
+                            </button>
+                            <span class="badge text-bg-secondary h-75 fs-6 p-2 rounded-circle d-flex align-items-center d-none d-lg-block">
+                                0
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+        </div>
+    </div>
+
+
+    <script>
+        let temRangeVal = $('#rangeValue');
+        let temRangeInput = $('#rangeInput');
+        let StartUse = $("#StartUse");
+        let StartUseBtn = $("#StartUseBtn");
+        let history = $("#History");
+        $(document).ready(function () {
+                var maxRows = 3; // 最大行數限制
+
+                $('#askQ').on('input', function () {
+                    var textarea = $(this);
+                    var lineHeight = parseInt(textarea.css('lineHeight'));
+                    var rows = textarea.val().split("\n").length;
+
+                    if (rows > maxRows) {
+                        textarea.height(lineHeight * maxRows);
+                    } else {
+                        textarea.height(lineHeight * rows);
+                    }
+                });
+            });
+        
+        $('#askQ').click(function () {
+            history.css('display', 'none');
+            history.css('display', 'none');
+            $('#Expand').css({
+                'left': '10px',
+                'top': '200px'
+            });  
+        });
+        $('#Expand').click(function () {
+                var windowWidth = $(window).width() + 15 ;
+                if (history.css('display') === 'none') {
+                    history.css('display', 'block');
+
+                    if (windowWidth <= 575){
+                        $('#Expand').css({
+                            'left': '53%',
+                            'top': '105px'
+                        });
+                        
+                    }
+                    else if (windowWidth <= 767) {
+                        $('#Expand').css({
+                            'left': '30%',
+                            'top': '105px'
+                        }); 
+                    } 
+                    else if (windowWidth <= 1000 && windowWidth >= 768) {
+                        $('#Expand').css({
+                            'left': '18%',
+                            'top': '80px'
+                        });
+                    } 
+                    else{
+                       $('#Expand').css({
+                            'left': '20%',
+                            'top': '80px'
+                        }); 
+                    }
+                } else {
+                    history.css('display', 'none');
+                    $('#Expand').css({
+                        'left': '10px',
+                        'top': '200px'
+                    });  
+                }
+            });
+        $(window).resize(function () {
+            var windowWidth = $(window).width();
+            history.css('display', 'none');
+             if (windowWidth <= 767) {
+                $('#Expand').css({
+                    'left': '10px',
+                    'top': '200px'
+                });  
+            }
+            else{
+                $('#Expand').css({
+                    'left': '10px',
+                    'top': '200px'
+                })
+            }
+        
+        })
+        StartUseBtn.click(function () {
+            StartUse.css("display", "none");
+            history.css("display", "block");
+            var windowWidth = $(window).width();
+            if (windowWidth <= 1000) {
+                $('#Expand').css({
+                    'left': '18%',
+                    'top': '80px'
+                });
+            }
+            else {
+                $('#Expand').css({
+                    'left': '20%',
+                    'top': '80px'
+                });
+            }
+        })
+        
+        temRangeInput.on('input',function(){
+            temRangeVal.text(temRangeInput.val());
+        })
+        let temStyleTag;
+        temRangeInput.on('input', function () {
+            temPercent = temRangeInput.val() * 50;
+            let temStyle = `
+            input[type="range"]::-webkit-slider-runnable-track {
+                background: linear-gradient(to right, rgb(110, 104, 104) ${temPercent}%, rgb(208, 208, 208) 0%);
+            }`;
+
+            // 删除旧的样式标签（如果存在）
+            if (temStyleTag) {
+                temStyleTag.remove();
+            }
+
+            // 创建新的样式标签并添加样式
+            temStyleTag = $('<style>').html(temStyle);
+            $('head').append(temStyleTag);
+        });
+    </script>
+
+
+</body>
+</html>
+
+
+
+@section topCSS{
+            <style>
+
+                body {
+                    height: auto;
+                }
+
+                #header {
+                    height: 70px;
+                }
+
+                    #header button {
+                        color: black;
+                    }
+
+                    #header h3 {
+                        font-weight: bold;
+                    }
+
+                    #header a {
+                        color: black;
+                        text-decoration: none;
+                    }
+
+                #neck {
+                    margin-top: 70px;
+                }
+
+                    #neck button {
+                        height: 50px;
+                    }
+
+                #knee .imgbox {
+                    width: 150px;
+                }
+
+                    #knee .imgbox img {
+                        height: 90px;
+                    }
+
+                #question {
+                    overflow: auto;
+                    resize: none;
+                    font-size: 1.2rem;
+                    line-height: 1.5rem;
+                }
+
+                    #question::-webkit-scrollbar {
+                        width: 10px; /* 設置滾動條的寬度 */
+                    }
+
+                    #question::-webkit-scrollbar-thumb {
+                        background-color: #bbbbbb; /* 設置滾動條的顏色 */
+                        border-radius: 5px; /* 設置滾動條的圓角 */
+                    }
+
+                    #question::-webkit-scrollbar-track {
+                        background-color: #fff; /* 設置滾動條的背景顏色 */
+                        border-radius: 5px; /* 設置滾動條的圓角 */
+                        border: none; /* 去掉滾動條的邊框 */
+                    }
+
+                .QABody {
+                    margin-top: 70px;
+                    height: calc(100vh - 70px);
+                }
+
+                #QAhead {
+                    height: 90px;
+                }
+
+                #QABox {
+                    height: calc(100vh - 160px);
+                }
+
+                    #QABox #response img {
+                        width: 70px;
+                        height: auto;
+                    }
+
+                    #QABox textarea {
+                        resize: none;
+                    }
+
+                    #QABox img {
+                        height: 15px;
+                    }
+
+                .custom-range::-webkit-slider-thumb {
+                    background-color: white; /* 设置滑块的颜色 */
+                    border: 1px gray solid;
+                }
+
+                .custom-range::-moz-range-thumb {
+                    background-color: white; /* 设置滑块的颜色 */
+                    border: 1px gray solid;
+                }
+
+                .custom-range::-ms-thumb {
+                    background-color: white; /* 设置滑块的颜色 */
+                    border: 1px #808080 solid;
+                }
+
+                #History {
+                    z-index: 25;
+                    position: relative;
+                    display: none;
+                    left: 0px;
+                    height: calc(100% - 70px);
+                }
+
+                #Expand {
+                    height: 50px;
+                    width: 50px;
+                    z-index: 50;
+                    left: 20%;
+                    top: 80px;
+                }
+
+                #StartUse {
+                    z-index: 100;
+                }
+
+                #micro {
+                    position: relative;
+                }
+
+                .custom-range::-webkit-slider-runnable-track {
+                    background: linear-gradient(to right, rgb(110, 104, 104) 50%, rgb(208, 208, 208) 0%);
+                }
+
+                .custom-range::-moz-range-track {
+                    background: linear-gradient(to right, rgb(110, 104, 104) 50%, rgb(208, 208, 208) 0%);
+                }
+
+                .custom-range::-ms-track {
+                    background: linear-gradient(to right, rgb(110, 104, 104) 50%, rgb(208, 208, 208) 0%);
+                }
+            </style>
+
+    @* # sourceMappingURL=hackproject.css.map *@
+
+}

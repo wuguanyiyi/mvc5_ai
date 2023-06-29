@@ -1,0 +1,517 @@
+﻿@model Sing_In
+@{
+    ViewData["Title"] = "Validation";
+}
+
+<h1>Validation</h1>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="gary" style="display:none;">
+        <div class="form-container">
+            <div class="switch-buttons">
+                <button class="active" id="login-btn">登入</button>
+                <button id="register-btn">註冊</button>
+                
+            </div>
+            <div class="form-wrapper">
+                
+                <form asp-action="Validation" asp-controller="Login" method="post" id="register-form">
+                    <h2>註冊</h2>
+                    <div class="input-group">
+                        <label  for="register-email">Email:</label>
+                        <input  type="email" id="register-email" name="Email" required>
+                        <button type="button" id="send-code-btn">寄送驗證碼</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="Code">驗證碼:</label>
+                        <input type="text" id="Code" name="Code" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-password">Password:</label>
+                        <input type="password" id="register-password" name="Password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirm-password">Confirm Password:</label>
+                        <input type="password" id="confirm-password" name="ConfirmPassword" required>
+                    </div>
+                    <input type="submit" >
+              
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="header">
+        <ul class="headinfo">
+            <li>
+                <img src="https://media1.giphy.com/media/7kn27lnYSAE9O/200.webp?cid=ecf05e47mwx2cuu86ct9i80fhmbahffgmbvl4uq2i6o0b0rq&rid=200.webp&ct=g"
+                     alt="">
+            </li>
+            <li><a href="./interface.html">Home</a></li>
+            <li><a href="./aboutus.html">about us</a></li>
+            <li><a href="./QAgpt.html">QAgpt</a></li>
+        </ul>
+        <ul class="account" id="account">
+            <li>
+                <button class="sign" onclick="sign()">Sign up</button>
+            </li>
+            <li>
+                <button class="login" onclick="login()">Log in</button>
+            </li>
+            <li>
+                <select name="language" id="language">
+                    <option value="zh" selected>Chinese</option>
+                    <option value="en">English</option>
+                    <option value="jp">Japanese</option>
+                </select>
+            </li>
+
+        </ul>
+    </div>
+    <div class="main">
+        <div class="useinfo">
+            <div class="use1Up">
+                <h1>Who are we</h1>
+                <h2>我們是來自中華大學的學生，是一群-初學網頁的同學組成的專案團隊</h2>
+            </div>
+            <div class="use1Down">
+                <img src="./175538168.jpg" alt="">
+            </div>
+        </div>
+        <div class="useinfo">
+            <div class="use2Up">
+                <h1>我們的理念</h1>
+                <h2>我們希望自己能夠在做中學習，保持理性沉穩的思維卻又不死板，活潑有創意。</h2>
+            </div>
+            <div class="use2Down">
+                <img src="./pexels-photo-3183150.jpeg" alt="">
+            </div>
+        </div>
+        <div class="useinfo">
+            <div class="use">
+                <h1>Enjoy The Challeng</h1>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+        function sign() {
+            let gary = document.getElementById('gary')
+            gary.setAttribute("style", "display:block;position:absolute;width: 100%;height: 100%;z-index: 99;background-color: #585858ab;display: flex;justify - content: center;align - items: center; ")
+            registerBtn.classList.add("active");
+            loginBtn.classList.remove("active");
+            registerForm.style.display = "flex";
+            loginForm.style.display = "none";
+        }
+        function login() {
+            let gary = document.getElementById('gary')
+            gary.setAttribute("style", "display:block;position:absolute;width: 100%;height: 100%;z-index: 99;background-color: #585858ab;display: flex;justify - content: center;align - items: center; ")
+            loginBtn.classList.add("active");
+            registerBtn.classList.remove("active");
+            loginForm.style.display = "flex";
+            registerForm.style.display = "none";
+        }
+
+        //切換手風琴
+        const loginBtn = document.getElementById("login-btn");
+        const registerBtn = document.getElementById("register-btn");
+        const closeBtn = document.getElementById("close-btn");
+        const loginForm = document.getElementById("login-form");
+        const registerForm = document.getElementById("register-form");
+        const sendCodeBtn = document.getElementById("send-code-btn");
+        const registerEmailInput = document.getElementById("register-email");
+        const codeInput = document.getElementById("code");
+        const registerPasswordInput = document.getElementById("register-password");
+        const confirmPasswordInput = document.getElementById("confirm-password");
+        // 建立 email 和 password 陣列
+        const emailList = [];
+        const passwordList = [];
+        // 切換登入和註冊表單
+        loginBtn.addEventListener("click", () => {
+            loginBtn.classList.add("active");
+            registerBtn.classList.remove("active");
+            loginForm.style.display = "flex";
+            registerForm.style.display = "none";
+        });
+
+        registerBtn.addEventListener("click", () => {
+            registerBtn.classList.add("active");
+            loginBtn.classList.remove("active");
+            registerForm.style.display = "flex";
+            loginForm.style.display = "none";
+        });
+        //關閉登入介面
+        closeBtn.addEventListener("click", () => {
+            let gary = document.getElementById('gary')
+            gary.setAttribute("style", "display:none")
+        })
+
+        // 發送驗證碼到註冊的電子郵件
+        sendCodeBtn.addEventListener("click", () => {
+            const email = registerEmailInput.value;
+            // 將驗證碼發送到電子郵件
+        });
+
+        // 將註冊資料儲存進陣列
+        registerForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const email = registerEmailInput.value;
+            //這邊可以新增驗證碼驗證
+            const password = registerPasswordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+       
+            // 將 email 和 password 儲存進陣列
+            emailList.push(email);
+            passwordList.push(password);
+
+            registerForm.reset();
+
+        });
+
+
+
+    </script>
+
+</body>
+</html>
+
+
+@section AboutUsCss{
+    <style>
+        body, html, h1, h2, h3, h4, h5, h6, p, span, img, ul, li {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            position: relative;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000000;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .pdlr {
+            box-sizing: border-box;
+            padding: 0 10%;
+        }
+
+        .header {
+            box-sizing: border-box;
+            padding: 0 10%;
+            display: flex;
+            width: 100%;
+            height: 70px;
+            background-color: #919191;
+            justify-content: space-between;
+        }
+
+            .header img {
+                height: 100%;
+                width: 100px;
+            }
+
+            .header ul {
+                display: flex;
+                height: 100%;
+                align-items: end;
+                align-items: center;
+            }
+
+                .header ul li {
+                    text-decoration: none;
+                    list-style: none;
+                    padding: 5px 10px;
+                    font-size: 1.5rem;
+                }
+
+                .header ul:first-child {
+                    align-items: end;
+                }
+
+                    .header ul:first-child li:first-child {
+                        padding: 0px;
+                        border: 0px;
+                        display: flex;
+                    }
+
+                    .header ul:first-child li:hover {
+                        background-color: #BBBBBB;
+                    }
+
+            .header .headinfo li {
+                border-right: 1px solid #BBBBBB;
+                box-sizing: border-box;
+                padding-bottom: 5px;
+            }
+
+            .header .account button {
+                width: 100px;
+                height: 30px;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+
+                .header .account button:hover {
+                    box-sizing: border-box;
+                    box-shadow: 5px 5px gray;
+                }
+
+            .header .account .sign {
+                background-color: #66CCFF;
+                border: 0px;
+                border-radius: 5px;
+            }
+
+                .header .account .sign:hover {
+                    background-color: #2277A7;
+                }
+
+            .header .account .login {
+                background-color: #AEDFF7;
+                border: 0px;
+                border-radius: 5px;
+            }
+
+                .header .account .login:hover {
+                    background-color: #82C9E7;
+                }
+
+            .header .account select {
+                width: 80px;
+                height: 50px;
+                background-color: #919191;
+                border: 1px solid #000000;
+            }
+
+                .header .account select img {
+                    width: 100%;
+                    height: auto !important;
+                }
+
+        .main {
+            width: 100%;
+            height: auto;
+        }
+
+        .useinfo {
+            display: flex;
+            height: auto;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 50px 10%;
+        }
+
+            .useinfo:nth-child(1) {
+                background-color: #BBBBBB;
+                display: flex;
+                flex-direction: column;
+            }
+
+                .useinfo:nth-child(1) .use1Up {
+                    height: auto;
+                }
+
+                    .useinfo:nth-child(1) .use1Up h1 {
+                        font-size: 2.5rem;
+                    }
+
+                    .useinfo:nth-child(1) .use1Up h2 {
+                        font-size: 1.5rem;
+                    }
+
+                .useinfo:nth-child(1) .use1Down {
+                    height: 300px;
+                    display: flex;
+                    justify-content: end;
+                }
+
+                    .useinfo:nth-child(1) .use1Down img {
+                        height: 100%;
+                    }
+
+            .useinfo:nth-child(2) {
+                background-color: #919191;
+                display: flex;
+                flex-direction: column;
+            }
+
+                .useinfo:nth-child(2) .use2Up {
+                    height: 100px;
+                }
+
+                    .useinfo:nth-child(2) .use2Up h1 {
+                        font-size: 2.5rem;
+                    }
+
+                    .useinfo:nth-child(2) .use2Up h2 {
+                        font-size: 1.5rem;
+                    }
+
+                .useinfo:nth-child(2) .use2Down {
+                    display: flex;
+                    justify-content: end;
+                }
+
+                    .useinfo:nth-child(2) .use2Down img {
+                        margin-top: 50px;
+                        width: 100%;
+                    }
+
+            .useinfo:nth-child(3) {
+                height: 500px;
+                background-color: #BBBBBB;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+                .useinfo:nth-child(3) .use {
+                    height: 100px;
+                }
+
+                    .useinfo:nth-child(3) .use h1 {
+                        font-size: 2.5rem;
+                    }
+
+        #gary {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 99;
+            background-color: rgba(88, 88, 88, 0.6705882353);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            #gary .form-container {
+                width: 80%;
+                max-width: 600px;
+                background-color: #FFFFFF;
+                border-radius: 5px;
+                overflow: hidden;
+            }
+
+                #gary .form-container .switch-buttons {
+                    display: flex;
+                    justify-content: flex-end;
+                    padding: 10px;
+                }
+
+                    #gary .form-container .switch-buttons button {
+                        padding: 5px 10px;
+                        font-size: 16px;
+                        background-color: transparent;
+                        border: 2px solid #919191;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    }
+
+                        #gary .form-container .switch-buttons button.active {
+                            background-color: #66CCFF;
+                            color: #fff;
+                            border-color: #aaa;
+                        }
+
+                        #gary .form-container .switch-buttons button:not(.active):hover {
+                            background-color: #2277A7;
+                            color: #fff;
+                            border-color: #aaa;
+                        }
+
+                #gary .form-container .form-wrapper {
+                    padding: 20px;
+                }
+
+                    #gary .form-container .form-wrapper form {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                        #gary .form-container .form-wrapper form h2 {
+                            margin-bottom: 20px;
+                            text-align: center;
+                        }
+
+                        #gary .form-container .form-wrapper form .input-group {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 20px;
+                        }
+
+                            #gary .form-container .form-wrapper form .input-group label {
+                                width: 120px;
+                                font-weight: bold;
+                                margin-right: 10px;
+                            }
+
+                            #gary .form-container .form-wrapper form .input-group input[type=email],
+                            #gary .form-container .form-wrapper form .input-group input[type=password],
+                            #gary .form-container .form-wrapper form .input-group input[type=text] {
+                                flex: 1;
+                                padding: 5px;
+                                font-size: 16px;
+                                border-radius: 5px;
+                                border: 2px solid #BBBBBB;
+                                transition: border-color 0.3s;
+                            }
+
+                                #gary .form-container .form-wrapper form .input-group input[type=email]:focus,
+                                #gary .form-container .form-wrapper form .input-group input[type=password]:focus,
+                                #gary .form-container .form-wrapper form .input-group input[type=text]:focus {
+                                    outline: none;
+                                    border-color: #BBBBBB;
+                                }
+
+                            #gary .form-container .form-wrapper form .input-group button#send-code-btn {
+                                margin-left: 10px;
+                                padding: 5px 10px;
+                                font-size: 16px;
+                                background-color: #66CCFF;
+                                color: #FFFFFF;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                transition: all 0.3s;
+                            }
+
+                                #gary .form-container .form-wrapper form .input-group button#send-code-btn:hover {
+                                    background-color: #2277A7;
+                                }
+
+                        #gary .form-container .form-wrapper form button[type=submit] {
+                            padding: 10px;
+                            font-size: 18px;
+                            background-color: #aaa;
+                            color: #fff;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                        }
+
+                            #gary .form-container .form-wrapper form button[type=submit]:hover {
+                                background-color: #666;
+                            }
+        /*# sourceMappingURL=aboutus.css.map */
+    </style>
+}
